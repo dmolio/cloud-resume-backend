@@ -2,6 +2,12 @@ import json
 import pytest
 from moto import mock_dynamodb
 import boto3
+import sys
+import os
+
+# Add the parent directory to sys.path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from lambda_function.visitor_counter import lambda_handler
 
 @mock_dynamodb
