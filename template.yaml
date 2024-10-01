@@ -20,7 +20,7 @@ Resources:
             Method: get
       Policies:
       - DynamoDBCrudPolicy:
-          TableName: resume-challenge
+          TableName: !Ref resume-challenge
       Environment:
         Variables:
           TABLE_NAME: resume-challenge
@@ -40,7 +40,7 @@ Resources:
 Outputs:
   VisitorCounterApi:
     Description: "API Gateway endpoint URL for Prod stage for Visitor Counter function"
-    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/prod/visitor-count/"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/visitor-count/"
   VisitorCounterFunction:
     Description: "Visitor Counter Lambda Function ARN"
     Value: !GetAtt VisitorCounterFunction.Arn
