@@ -3,16 +3,8 @@ name: Backend CI/CD
 on:
   push:
     branches: [main]
-    paths:
-    - 'template.yaml'
-    - 'lambda/**'
-    - 'tests/**'
   pull_request:
     branches: [main]
-    paths:
-    - 'template.yaml'
-    - 'lambda/**'
-    - 'tests/**'
 
 jobs:
   test:
@@ -32,7 +24,6 @@ jobs:
 
   deploy:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -49,8 +40,13 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-    - name: SAM build
-      run: sam build
-    - name: SAM deploy
-      run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+        aws-region: us-east-1 # Replace with your AWS region
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+    - name: Terraform Init
+      run: terraform init
+    - name: Terraform Plan
+      run: terraform plan
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve
