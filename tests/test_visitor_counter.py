@@ -2,7 +2,7 @@ import json
 import pytest
 from moto import mock_dynamodb
 import boto3
-from lambda.visitor_counter import lambda_handler
+from lambda_function.visitor_counter import lambda_handler
 
 @mock_dynamodb
 def test_lambda_handler():

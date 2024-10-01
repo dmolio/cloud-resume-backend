@@ -94,7 +94,7 @@ resource "aws_lambda_function" "visitor_count" {
 
 resource "null_resource" "lambda_zip" {
   provisioner "local-exec" {
-    command = "cd lambda && zip -r ../main.zip ."
+    command = "cd lambda_function && zip -r ../main.zip ."
   }
 
   triggers = {
