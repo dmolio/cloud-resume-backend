@@ -11,6 +11,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Set AWS_REGION environment variable for the test
 os.environ['AWS_REGION'] = 'us-east-1'
 
+# Set mock AWS credentials for the test
+os.environ['AWS_ACCESS_KEY_ID'] = 'testing'
+os.environ['AWS_SECRET_ACCESS_KEY'] = 'testing'
+os.environ['AWS_SECURITY_TOKEN'] = 'testing'
+os.environ['AWS_SESSION_TOKEN'] = 'testing'
+
 from lambda_function.visitor_counter import lambda_handler
 
 @mock_dynamodb

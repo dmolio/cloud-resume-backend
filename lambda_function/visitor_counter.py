@@ -1,6 +1,7 @@
 import json
 import boto3
 import os
+from botocore.exceptions import ClientError
 
 # Get the region from environment variable or default to 'us-east-1'
 REGION = os.environ.get('AWS_REGION', 'us-east-1')
@@ -31,10 +32,8 @@ def lambda_handler(event, context):
             'body': json.dumps({'views': views})
         }
     except ClientError as e:
+        print(f"Error: {e}")
         return {
             'statusCode': 500,
-            'headers': {
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({'error': e.response['Error']['Message']})
+            'body': json.dumps({'error': str(e)})
         }
