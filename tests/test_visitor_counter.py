@@ -8,21 +8,16 @@ import os
 # Add the parent directory to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Set AWS_REGION environment variable for the test
-os.environ['AWS_REGION'] = 'us-east-1'
-
-# Set mock AWS credentials for the test
-os.environ['AWS_ACCESS_KEY_ID'] = 'testing'
-os.environ['AWS_SECRET_ACCESS_KEY'] = 'testing'
-os.environ['AWS_SECURITY_TOKEN'] = 'testing'
-os.environ['AWS_SESSION_TOKEN'] = 'testing'
+# Set environment variables for the test
+os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
+os.environ['DYNAMODB_ENDPOINT_URL'] = 'http://localhost:8000'
 
 from lambda_function.visitor_counter import lambda_handler
 
 @mock_dynamodb
 def test_lambda_handler():
     # Create mock DynamoDB table
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
     table = dynamodb.create_table(
         TableName='resume-challenge',
         KeySchema=[{'AttributeName': 'id', 'KeyType': 'HASH'}],
