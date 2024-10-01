@@ -24,6 +24,8 @@ jobs:
         pwd
         ls -R
     - name: Run tests
+      env:
+        AWS_REGION: 'us-east-1'
       run: |
         cd $GITHUB_WORKSPACE
         python -m pytest tests/

@@ -8,6 +8,9 @@ import os
 # Add the parent directory to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Set AWS_REGION environment variable for the test
+os.environ['AWS_REGION'] = 'us-east-1'
+
 from lambda_function.visitor_counter import lambda_handler
 
 @mock_dynamodb

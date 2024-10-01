@@ -1,10 +1,17 @@
 import json
 import boto3
-from botocore.exceptions import ClientError
-from decimal import Decimal
+import os
 
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('resume-challenge')
+# Get the region from environment variable or default to 'us-east-1'
+REGION = os.environ.get('AWS_REGION', 'us-east-1')
+
+# Initialize the DynamoDB client with the region
+dynamodb = boto3.resource('dynamodb', region_name=REGION)
+
+# Get the table name from environment variable or use a default
+TABLE_NAME = os.environ.get('DYNAMODB_TABLE_NAME', 'resume-challenge')
+
+table = dynamodb.Table(TABLE_NAME)
 
 def lambda_handler(event, context):
     try:
