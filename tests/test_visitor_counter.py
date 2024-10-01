@@ -11,13 +11,14 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Set environment variables for the test
 os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 os.environ['DYNAMODB_ENDPOINT_URL'] = 'http://localhost:8000'
+os.environ['DYNAMODB_TABLE_NAME'] = 'resume-challenge'
 
 from lambda_function.visitor_counter import lambda_handler
 
 @mock_dynamodb
 def test_lambda_handler():
     # Create mock DynamoDB table
-    dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
+    dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000', region_name='us-east-1')
     table = dynamodb.create_table(
         TableName='resume-challenge',
         KeySchema=[{'AttributeName': 'id', 'KeyType': 'HASH'}],

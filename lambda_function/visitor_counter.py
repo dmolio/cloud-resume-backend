@@ -4,9 +4,10 @@ import os
 from botocore.exceptions import ClientError
 
 def get_dynamodb_resource():
+    region = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
     if 'DYNAMODB_ENDPOINT_URL' in os.environ:
-        return boto3.resource('dynamodb', endpoint_url=os.environ['DYNAMODB_ENDPOINT_URL'])
-    return boto3.resource('dynamodb')
+        return boto3.resource('dynamodb', endpoint_url=os.environ['DYNAMODB_ENDPOINT_URL'], region_name=region)
+    return boto3.resource('dynamodb', region_name=region)
 
 # Get the table name from environment variable or use a default
 TABLE_NAME = os.environ.get('DYNAMODB_TABLE_NAME', 'resume-challenge')

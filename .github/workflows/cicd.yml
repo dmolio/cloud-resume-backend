@@ -25,7 +25,9 @@ jobs:
         ls -R
     - name: Run tests
       env:
-        AWS_REGION: 'us-east-1'
+        AWS_DEFAULT_REGION: 'us-east-1'
+        DYNAMODB_ENDPOINT_URL: 'http://localhost:8000'
+        DYNAMODB_TABLE_NAME: 'resume-challenge'
       run: |
         cd $GITHUB_WORKSPACE
         python -m pytest tests/
