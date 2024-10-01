@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Cloud Resume Challenge Backend
+
+Resources:
+  VisitorCounterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: VisitorCounterFunction
+      CodeUri: lambda/
+      Handler: visitor_counter.lambda_handler
+      Runtime: python3.9
+      Architectures:
+      - x86_64
+      Events:
+        GetVisitorCount:
+          Type: Api
+          Properties:
+            Path: /visitor-count
+            Method: get
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: resume-challenge
+      Environment:
+        Variables:
+          TABLE_NAME: resume-challenge
+
+  VisitorCounterTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: resume-challenge
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+
+Outputs:
+  VisitorCounterApi:
+    Description: "API Gateway endpoint URL for Prod stage for Visitor Counter function"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/prod/visitor-count/"
+  VisitorCounterFunction:
+    Description: "Visitor Counter Lambda Function ARN"
+    Value: !GetAtt VisitorCounterFunction.Arn
+  VisitorCounterFunctionIamRole:
+    Description: "Implicit IAM Role created for Visitor Counter function"
+    Value: !GetAtt VisitorCounterFunction.Arn
